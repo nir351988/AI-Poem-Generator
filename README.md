@@ -1,16 +1,14 @@
+# AI Poem Generator  
+[![Build Status](https://github.com/nir351988/AI-Poem-Generator/actions/workflows/docker-image.yml/badge.svg)](https://github.com/nir351988/AI-Poem-Generator/actions)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
+[![Docker Image Version](https://img.shields.io/docker/v/ninadranade/ai-poem-generator?logo=docker)](https://hub.docker.com/r/ninadranade/ai-poem-generator)
 
-Below is an updated version of your README file that incorporates additional details on Dockerization, CI/CD setup, and usage instructions, while also refining the overall project documentation.
-
-
-
-```
-# AI Poem Generator
-
-A Flask-based web application that generates customized poems based on user input. This project demonstrates fundamental web development concepts including Flask routing, template rendering, form handling, and both template-based and AI-powered text generation.
+A Flask-based web application that generates personalized poems using both AI-driven and template-based methods, highlighted with clear code examples and badges for easy navigation.
 
 ---
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Features](#features)
 - [Technical Architecture](#technical-architecture)
@@ -18,8 +16,6 @@ A Flask-based web application that generates customized poems based on user inpu
 - [Usage](#usage)
 - [Dockerization](#dockerization)
 - [CI/CD Pipeline](#cicd-pipeline)
-- [API Documentation](#api-documentation)
-- [Development](#development)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -27,26 +23,27 @@ A Flask-based web application that generates customized poems based on user inpu
 
 ## Overview
 
-The AI Poem Generator allows users to supply words or phrases that are then incorporated into poem templates or used by AI models to generate unique poems. The application randomly selects from template-based generation or employs AI techniques to produce personalized poetry.
-
-**Note:** The project utilizes both template-based approaches and AI-driven generation methods to create diverse poetic outputs.
+The AI Poem Generator lets you supply words or phrases that are dynamically integrated into creative poem outputs. It leverages both AI-powered generation and pre-defined templates, demonstrating innovative use of modern web and machine learning technologies.
 
 ---
 
 ## Features
 
-- **AI-Powered Generation:** Uses Hugging Face's text generation models for creating unique poems.
-- **Template-Based Generation:** Falls back to predefined poem templates if AI generation is not available.
-- **Dynamic Content Insertion:** Incorporates user input directly into the generated poem.
-- **Responsive Design:** Optimized for both desktop and mobile devices (using Bootstrap).
-- **Input Validation:** Prevents form submission with empty or invalid inputs.
-- **User-Friendly Interface:** Clean, intuitive design for a seamless user experience.
+- **Dual Generation Approaches:** Combines AI-powered text generation with customizable poem templates.
+- **Dynamic Input Handling:** Seamlessly incorporates user-provided words/phrases into generated poetry.
+- **Responsive Design:** Optimized for both desktop and mobile devices.
+- **Intuitive Interface:** Easy-to-use UI for generating unique and personalized poems.
 
 ---
 
 ## Technical Architecture
 
-The application is built using Flask for the backend, with HTML5, CSS3, and Bootstrap enhancing the frontend. It leverages modern Python libraries for both AI text generation and template manipulation.
+The application is built using:
+- **Backend:** Python Flask
+- **Frontend:** HTML5, CSS3, and Bootstrap
+- **AI Integration:** State-of-the-art text generation libraries
+- **Containerization:** Docker for consistent deployments
+- **CI/CD:** GitHub Actions automates the build and deployment pipeline
 
 ---
 
@@ -54,79 +51,79 @@ The application is built using Flask for the backend, with HTML5, CSS3, and Boot
 
 ### Prerequisites
 
-- Python 3.6+
-- Virtual Environment tools (optional but recommended)
+- Python 3.10 or later
+- Git
+- (Optional) Virtual Environment setup (e.g., venv)
 
 ### Steps
 
-1. Clone the repository:
-   ```
+1. **Clone the repository:**
+   ```bash
    git clone https://github.com/nir351988/AI-Poem-Generator.git
    cd AI-Poem-Generator
    ```
 
-2. Create and activate a virtual environment:
-   ```
+2. **Set up a virtual environment (recommended):**
+   ```bash
    python -m venv .venv
-   source .venv/bin/activate   # On Windows, run .venv\Scripts\activate
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
-3. Install dependencies:
-   ```
+3. **Install dependencies:**
+   ```bash
    pip install -r requirements.txt
    ```
 
-4. Configure environment variables (if applicable):
-   Create a `.env` file (optional) for settings specific to your environment.
+4. **Configure Environment Variables:**
+   Create a `.env` file if your application requires custom configurations.
 
 ---
 
 ## Usage
 
-To run the application locally:
-```
+### Running Locally
+
+Start the Flask development server:
+```bash
 flask run
 ```
-By default, the app runs on port 5000. Open your browser and navigate to:
+Then open your browser and navigate to:
 ```
 http://127.0.0.1:5000
+```
+
+### Running Tests
+
+If tests are provided, you can run:
+```bash
+pytest
 ```
 
 ---
 
 ## Dockerization
 
-You can containerize this application using Docker. Two configuration files have been provided:
+This project includes a `Dockerfile` and a `docker-compose.yml` for containerized deployments.
 
-### Dockerfile
-
-The Dockerfile installs system dependencies, Python libraries, and sets up the environment with a non-root user. It uses Gunicorn to serve the app in production.
-
-### docker-compose.yml
-
-This file simplifies the building, configuration, and running of your container, and supports loading environment variables from a `.env` file.
-
-### Basic Commands
+### Using Docker
 
 - **Build the Docker Image:**
-  ```
+  ```bash
   docker build -t ai-poem-generator .
   ```
 - **Run the Docker Container:**
-  ```
+  ```bash
   docker run -p 5000:5000 ai-poem-generator
   ```
-- **Using Docker Compose:**
-  Build and run with:
-  ```
+
+### Using Docker Compose
+
+- **Build and Start the Container:**
+  ```bash
   docker-compose up --build
   ```
-  Run in detached mode:
-  ```
-  docker-compose up --build -d
-  ```
-- **Stop and Remove Containers (Docker Compose):**
-  ```
+- **Stop the Container:**
+  ```bash
   docker-compose down
   ```
 
@@ -134,54 +131,26 @@ This file simplifies the building, configuration, and running of your container,
 
 ## CI/CD Pipeline
 
-A GitHub Actions workflow has been set up to automate the following:
-- Build your Docker image.
-- Log in to Docker Hub.
-- Tag and push the image to Docker Hub (repository: `ninadranade/ai-poem-generator`).
+This repository uses GitHub Actions to automatically build and push Docker images on every push to the master branch.
 
-**Setup Steps:**
-
-1. Add the following secrets in your GitHub repository’s settings:
-   - `DOCKERHUB_USERNAME`
-   - `DOCKERHUB_PASSWORD`
-
-2. The workflow file is located at `.github/workflows/docker-image.yml` and is triggered on pushes to the main branch.
-
-This automation allows you to have a reliable CI/CD pipeline without the need for external platforms; the GitHub-hosted runners handle the build process.
-
----
-
-## API Documentation
-
-Detailed API documentation (if applicable) can be added here. Outline endpoints, expected parameters, sample request/response bodies, and any authentication details.
-
----
-
-## Development
-
-For local development:
-- Use a virtual environment.
-- Leverage the volume mapping feature in `docker-compose.yml` for live code syncing.
-- Update environment variables as needed during development.
-
-Refer to the [Dockerization](#dockerization) section for running the app in a container during development.
+- The workflow file is located at [`.github/workflows/docker-image.yml`](.github/workflows/docker-image.yml).
+- It uses Docker Buildx, logs into Docker Hub, and pushes the image to [ninadranade/ai-poem-generator](https://hub.docker.com/r/ninadranade/ai-poem-generator).
 
 ---
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request with your improvements.
+Contributions are welcome! To get started:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Follow coding conventions and add tests where appropriate.
+4. Submit a pull request detailing your changes.
+
+For more detailed instructions, please refer to [CONTRIBUTING.md](CONTRIBUTING.md) (if available).
 
 ---
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
-
-This README serves as a comprehensive guide to understanding, deploying, and contributing to the AI Poem Generator application. Adjust sections as needed based on future changes or project requirements.
-```
-
-
-Feel free to modify or enhance further based on your project's evolving needs.
