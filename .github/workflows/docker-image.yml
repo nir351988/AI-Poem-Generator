@@ -1,41 +1,32 @@
-name: CI/CD - Integration Test
+name: Build and Push Docker Image
 
 on:
   push:
     branches:
-      - new-code
+      - master
   pull_request:
     branches:
-      - new-code
+      - master
 
 jobs:
-  build_test:
+  build-push:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker Image
-        run: |
-          docker build -t ai-poem-generator:ci .
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Run Container
-        run: |
-          # Run container in detached mode
-          docker run -d --rm --name ai_test_container -p 5000:5000 ai-poem-generator:ci
-          
-          # Wait for the container to be ready (adjust sleep if necessary or implement a retry loop)
-          sleep 10
-
-      - name: Test Application Health
-        run: |
-          # Test the homepage (or a health endpoint if available)
-          curl -f http://localhost:5000 || (echo "Application did not respond as expected" && exit 1)
-
-      - name: Stop and Remove Container
-        run: |
-          docker stop ai_test_container
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ninadranade/ai-poem-generator:latest
