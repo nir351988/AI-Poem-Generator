@@ -31,3 +31,29 @@ jobs:
           context: .
           push: true
           tags: ninadranade/ai-poem-generator:latest
+
+name: Vulnerability Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ninadranade/ai-poem-generator:latest .
+
+      - name: Run Trivy Vulnerability Scan
+        uses: aquasecurity/trivy-action@v0.6.0
+        with:
+          image-ref: ninadranade/ai-poem-generator:latest
+          format: 'table'
+          exit-code: '1'
+          severity: 'HIGH,CRITICAL'
