@@ -1,192 +1,187 @@
+
+Below is an updated version of your README file that incorporates additional details on Dockerization, CI/CD setup, and usage instructions, while also refining the overall project documentation.
+
+
+
+```
 # AI Poem Generator
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.6%2B-blue)
-![Flask](https://img.shields.io/badge/flask-2.0.1-green)
+A Flask-based web application that generates customized poems based on user input. This project demonstrates fundamental web development concepts including Flask routing, template rendering, form handling, and both template-based and AI-powered text generation.
 
-A Flask-based web application that generates poems based on user input. This application demonstrates fundamental web development concepts including Flask routing, template rendering, form handling, and string manipulation.
+---
 
 ## Table of Contents
-
 - [Overview](#overview)
 - [Features](#features)
 - [Technical Architecture](#technical-architecture)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Dockerization](#dockerization)
+- [CI/CD Pipeline](#cicd-pipeline)
 - [API Documentation](#api-documentation)
 - [Development](#development)
 - [Contributing](#contributing)
 - [License](#license)
 
+---
+
 ## Overview
 
-The AI Poem Generator provides a simple interface for users to input words or phrases, which are then incorporated into predefined poem templates or generated using AI models. The application randomly selects a template or uses AI to create a personalized poem.
+The AI Poem Generator allows users to supply words or phrases that are then incorporated into poem templates or used by AI models to generate unique poems. The application randomly selects from template-based generation or employs AI techniques to produce personalized poetry.
 
-**Note:** This application now uses both template-based text generation and artificial intelligence (AI) for generating poems.
+**Note:** The project utilizes both template-based approaches and AI-driven generation methods to create diverse poetic outputs.
+
+---
 
 ## Features
 
-- **AI-Powered Generation**: Utilizes Hugging Face's text generation models for creating unique poems
-- **Template-Based Generation**: Falls back to predefined poem templates if AI generation fails
-- **Dynamic Content Insertion**: Incorporates user input into selected templates or AI-generated poems
-- **Responsive Design**: Optimized for both desktop and mobile devices using Bootstrap
-- **Input Validation**: Prevents form submission with empty inputs
-- **User-Friendly Interface**: Clean, intuitive design for seamless user experience
+- **AI-Powered Generation:** Uses Hugging Face's text generation models for creating unique poems.
+- **Template-Based Generation:** Falls back to predefined poem templates if AI generation is not available.
+- **Dynamic Content Insertion:** Incorporates user input directly into the generated poem.
+- **Responsive Design:** Optimized for both desktop and mobile devices (using Bootstrap).
+- **Input Validation:** Prevents form submission with empty or invalid inputs.
+- **User-Friendly Interface:** Clean, intuitive design for a seamless user experience.
+
+---
 
 ## Technical Architecture
 
-### Technology Stack
+The application is built using Flask for the backend, with HTML5, CSS3, and Bootstrap enhancing the frontend. It leverages modern Python libraries for both AI text generation and template manipulation.
 
-- **Backend**: Python 3.6+, Flask 2.0.1
-- **Frontend**: HTML5, CSS3, Bootstrap 5
-- **Development Tools**: Git, Virtual Environment
-
-### Component Structure
-
-```
-AI-Poem-Generator/
-├── app.py                  # Application entry point and core logic
-├── templates/              # Jinja2 HTML templates
-│   ├── index.html          # Home page with input form
-│   └── result.html         # Results page displaying generated poem
-├── static/                 # Static assets (if applicable)
-├── requirements.txt        # Python dependencies
-└── README.md               # Project documentation
-```
-
-### Core Functionality
-
-The application follows a simple MVC-like pattern:
-
-1. **Controller** (app.py): Handles HTTP requests, processes form data, and manages application logic
-2. **View** (templates): Renders HTML templates with Jinja2
-3. **Model**: Implemented as Python functions that generate poem content
+---
 
 ## Installation
 
 ### Prerequisites
 
-- Python 3.6 or higher
-- pip (Python package manager)
-- Git (optional, for cloning the repository)
+- Python 3.6+
+- Virtual Environment tools (optional but recommended)
 
-### Setup Instructions
+### Steps
 
-1. **Clone the repository**:
-   ```bash
+1. Clone the repository:
+   ```
    git clone https://github.com/nir351988/AI-Poem-Generator.git
    cd AI-Poem-Generator
    ```
 
-2. **Create and activate a virtual environment**:
-   ```bash
-   # Create virtual environment
-   python -m venv venv
-   
-   # Activate on Linux/macOS
-   source venv/bin/activate
-   
-   # Activate on Windows
-   venv\Scripts\activate
+2. Create and activate a virtual environment:
+   ```
+   python -m venv .venv
+   source .venv/bin/activate   # On Windows, run .venv\Scripts\activate
    ```
 
-3. **Install dependencies**:
-   ```bash
+3. Install dependencies:
+   ```
    pip install -r requirements.txt
    ```
 
-4. **Run the application**:
-   ```bash
-   python app.py
-   ```
+4. Configure environment variables (if applicable):
+   Create a `.env` file (optional) for settings specific to your environment.
 
-5. **Access the application**:
-   Open your web browser and navigate to `http://127.0.0.1:5000`
+---
 
 ## Usage
 
-### Generating a Poem
-
-1. Navigate to the home page
-2. Enter a word or phrase in the provided input field
-3. Optionally, choose a poem style from the dropdown menu
-4. Click the "Generate Poem" button
-5. View your personalized poem on the results page
-6. Click "Generate Another Poem" to create a new poem
-
-### Example
-
-Input: "ocean"
-
-Possible output:
+To run the application locally:
 ```
-The ocean whispers secrets
-In the depths of my heart
-Like ocean waves crashing
-We shall never part
+flask run
 ```
+By default, the app runs on port 5000. Open your browser and navigate to:
+```
+http://127.0.0.1:5000
+```
+
+---
+
+## Dockerization
+
+You can containerize this application using Docker. Two configuration files have been provided:
+
+### Dockerfile
+
+The Dockerfile installs system dependencies, Python libraries, and sets up the environment with a non-root user. It uses Gunicorn to serve the app in production.
+
+### docker-compose.yml
+
+This file simplifies the building, configuration, and running of your container, and supports loading environment variables from a `.env` file.
+
+### Basic Commands
+
+- **Build the Docker Image:**
+  ```
+  docker build -t ai-poem-generator .
+  ```
+- **Run the Docker Container:**
+  ```
+  docker run -p 5000:5000 ai-poem-generator
+  ```
+- **Using Docker Compose:**
+  Build and run with:
+  ```
+  docker-compose up --build
+  ```
+  Run in detached mode:
+  ```
+  docker-compose up --build -d
+  ```
+- **Stop and Remove Containers (Docker Compose):**
+  ```
+  docker-compose down
+  ```
+
+---
+
+## CI/CD Pipeline
+
+A GitHub Actions workflow has been set up to automate the following:
+- Build your Docker image.
+- Log in to Docker Hub.
+- Tag and push the image to Docker Hub (repository: `ninadranade/ai-poem-generator`).
+
+**Setup Steps:**
+
+1. Add the following secrets in your GitHub repository’s settings:
+   - `DOCKERHUB_USERNAME`
+   - `DOCKERHUB_PASSWORD`
+
+2. The workflow file is located at `.github/workflows/docker-image.yml` and is triggered on pushes to the main branch.
+
+This automation allows you to have a reliable CI/CD pipeline without the need for external platforms; the GitHub-hosted runners handle the build process.
+
+---
 
 ## API Documentation
 
-### Endpoints
+Detailed API documentation (if applicable) can be added here. Outline endpoints, expected parameters, sample request/response bodies, and any authentication details.
 
-| Endpoint | Method | Description | Parameters |
-|----------|--------|-------------|------------|
-| `/` | GET | Renders the home page with input form | None |
-| `/generate` | POST | Processes user input and generates poem | `user_input`: String, `poem_style`: String (optional) |
-| `/result` | GET | Displays the generated poem | None |
+---
 
 ## Development
 
-### Project Structure
+For local development:
+- Use a virtual environment.
+- Leverage the volume mapping feature in `docker-compose.yml` for live code syncing.
+- Update environment variables as needed during development.
 
-- **app.py**: Contains Flask application setup, route definitions, and poem generation logic
-- **templates/**: Contains Jinja2 HTML templates for rendering pages
-  - **index.html**: Home page template with input form
-  - **result.html**: Results page template displaying the generated poem
+Refer to the [Dockerization](#dockerization) section for running the app in a container during development.
 
-### Adding New Templates
-
-To add new poem templates, modify the `templates` list in `app.py`:
-
-```python
-templates = [
-    # Existing templates
-    "The {} whispers secrets\nIn the depths of my heart\nLike {} waves crashing\nWe shall never part",
-    
-    # Add new template
-    "Your new template with {} placeholders for {} user input"
-]
-```
+---
 
 ## Contributing
 
-Contributions are welcome and appreciated. To contribute:
+Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request with your improvements.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Implement your changes
-4. Add appropriate tests if applicable
-5. Commit your changes (`git commit -m 'Add some amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
-
-Please ensure your code adheres to the project's coding standards and includes appropriate documentation.
-
-### Development Guidelines
-
-- Follow PEP 8 style guidelines for Python code
-- Use meaningful variable and function names
-- Add comments for complex logic
-- Update documentation when adding new features
+---
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the [MIT License](LICENSE).
 
-## Acknowledgements
+---
 
-- Flask framework and its contributors
-- Bootstrap for responsive design components
-- Hugging Face for the text generation models
-- All contributors who have helped improve this project.
+This README serves as a comprehensive guide to understanding, deploying, and contributing to the AI Poem Generator application. Adjust sections as needed based on future changes or project requirements.
+```
+
+
+Feel free to modify or enhance further based on your project's evolving needs.
